@@ -2,6 +2,10 @@
 
 ## master
 
+**Enhancements:**
+
+- [#131](https://github.com/castle/castle-ruby/pull/131) remove requirement for `user_id`
+
 ## 3.5.0 (2018-04-18)
 
 **BREAKING CHANGES:**
