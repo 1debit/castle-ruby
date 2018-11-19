@@ -1,10 +1,10 @@
 require_relative 'cookie_store'
 
 module Sinatra
-  module Castle
+  module ChimeCastle
     module Helpers
       def castle
-        @castle ||= ::Castle::Client.new(request, response)
+        @castle ||= ::ChimeCastle::Client.new(request, response)
       end
     end
 
@@ -13,5 +13,5 @@ module Sinatra
     end
   end
 
-  register Castle
+  register ChimeCastle
 end

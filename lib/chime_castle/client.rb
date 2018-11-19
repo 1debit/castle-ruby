@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   class Client
 
     attr_accessor :request_context, :do_not_track
@@ -6,7 +6,7 @@ module Castle
     def initialize(request, response, opts = {})
       # Save a reference in the per-request store so that the request
       # middleware in request.rb can access it
-      RequestStore.store[:castle] = self
+      RequestStore.store[:chime_castle] = self
 
       @request_context = {
         ip: request.ip,
@@ -18,12 +18,12 @@ module Castle
 
     def identify(user_id, opts = {})
       return if @do_not_track
-      Castle::User.save_existing(user_id, opts)
+      ChimeCastle::User.save_existing(user_id, opts)
     end
 
     def track(opts = {})
       return if @do_not_track
-      Castle::Event.create(opts)
+      ChimeCastle::Event.create(opts)
     end
 
     def do_not_track!
@@ -35,25 +35,25 @@ module Castle
     end
 
     def authenticate(user_id)
-      Castle::Authentication.create(user_id: user_id)
+      ChimeCastle::Authentication.create(user_id: user_id)
     end
 
     def authentication(authentication_id)
-      Castle::Authentication.find(authentication_id)
+      ChimeCastle::Authentication.find(authentication_id)
     end
 
     def authentications
-      Castle::Authentication
+      ChimeCastle::Authentication
     end
 
     private
 
     def extract_cookies(request, response)
-      # Extract the cookie set by the Castle Javascript
+      # Extract the cookie set by the ChimeCastle Javascript
       if response.class.name == 'ActionDispatch::Cookies::CookieJar'
-        Castle::CookieStore::Rack.new(response)
+        ChimeCastle::CookieStore::Rack.new(response)
       else
-        Castle::CookieStore::Base.new(request, response)
+        ChimeCastle::CookieStore::Base.new(request, response)
       end
     end
 

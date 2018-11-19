@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   class UserAgent < Model
   end
 end

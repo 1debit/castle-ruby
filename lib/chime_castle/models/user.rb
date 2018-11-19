@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   class User < Model
   end
 end

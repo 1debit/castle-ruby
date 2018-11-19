@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   class Authentication < Model
     has_one :context
 

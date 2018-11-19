@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   module CookieStore
     class Base
       def initialize(request, response)

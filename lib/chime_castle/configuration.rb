@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   class << self
     def configure(config_hash=nil)
       if config_hash
@@ -11,7 +11,7 @@ module Castle
     end
 
     def config
-      @configuration ||= Castle::Configuration.new
+      @configuration ||= ChimeCastle::Configuration.new
     end
 
     def api_secret=(api_secret)
@@ -28,7 +28,7 @@ module Castle
     end
 
     def api_secret
-      ENV['CASTLE_API_SECRET'] || @_api_secret || ''
+      @_api_secret || ''
     end
 
     def api_secret=(value)

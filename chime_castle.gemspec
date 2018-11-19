@@ -1,12 +1,12 @@
 $:.push File.expand_path("../lib", __FILE__)
 
-require 'castle-rb/version'
+require 'chime_castle/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'castle-rb'
-  s.version     = Castle::VERSION
-  s.summary     = "Castle"
-  s.description = "Secure your authentication stack with user account monitoring"
+  s.name        = 'chime_castle'
+  s.version     = ChimeCastle::VERSION
+  s.summary     = "Chime Fork of Castle Api v1.2.13"
+  s.description = "Deprecated Version: Secure your authentication stack with user account monitoring"
   s.authors     = ["Johan Brissmyr"]
   s.email       = 'johan@castle.io'
   s.homepage    = 'https://castle.io'

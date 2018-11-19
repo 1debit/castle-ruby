@@ -1,16 +1,16 @@
 require 'her'
 
 class Her::Collection
-  # Call the overridden to_json in Castle::Model
+  # Call the overridden to_json in ChimeCastle::Model
   def to_json
     self.map { |m| m.to_json }
   end
 end
 
-module Castle
+module ChimeCastle
   class Model
     include Her::Model
-    use_api Castle::API
+    use_api ChimeCastle::API
 
     def initialize(args = {})
       # allow initializing with id as a string

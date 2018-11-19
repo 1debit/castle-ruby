@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   module Request
 
     def self.client_user_agent
@@ -6,7 +6,7 @@ module Castle
       lang_version = "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})"
 
       {
-        :bindings_version => Castle::VERSION,
+        :bindings_version => ChimeCastle::VERSION,
         :lang => 'ruby',
         :lang_version => lang_version,
         :platform => RUBY_PLATFORM,
@@ -34,7 +34,7 @@ module Castle
         end
 
         def call(env)
-          value = Base64.encode64(":#{@api_secret || Castle.config.api_secret}")
+          value = Base64.encode64(":#{@api_secret || ChimeCastle.config.api_secret}")
           value.delete!("\n")
           env[:request_headers]["Authorization"] = "Basic #{value}"
           @app.call(env)
@@ -45,13 +45,13 @@ module Castle
       #
       class RequestErrorHandler < Faraday::Middleware
         def call(env)
-          env.request.timeout = Castle.config.request_timeout
+          env.request.timeout = ChimeCastle.config.request_timeout
           begin
             @app.call(env)
           rescue Faraday::ConnectionFailed
-            raise Castle::RequestError, 'Could not connect to Castle API'
+            raise ChimeCastle::RequestError, 'Could not connect to Castle API'
           rescue Faraday::TimeoutError
-            raise Castle::RequestError, 'Castle API timed out'
+            raise ChimeCastle::RequestError, 'Castle API timed out'
           end
         end
       end
@@ -62,17 +62,17 @@ module Castle
         def call(env)
           begin
             env[:request_headers]["X-Castle-Client-User-Agent"] =
-              MultiJson.encode(Castle::Request.client_user_agent)
+              MultiJson.encode(ChimeCastle::Request.client_user_agent)
           rescue # ignored
           end
 
-          if Castle.config.source_header
+          if ChimeCastle.config.source_header
             env[:request_headers]["X-Castle-Source"] =
-              Castle.config.source_header
+              ChimeCastle.config.source_header
           end
 
           env[:request_headers]["User-Agent"] =
-            "Castle/v1 RubyBindings/#{Castle::VERSION}"
+            "Castle/v1 RubyBindings/#{ChimeCastle::VERSION}"
 
           @app.call(env)
         end
@@ -82,7 +82,7 @@ module Castle
       #
       class ContextHeaders < Faraday::Middleware
         def call(env)
-          castle = RequestStore.store[:castle]
+          castle = RequestStore.store[:chime_castle]
           return @app.call(env) unless castle
 
           castle.request_context.each do |key, value|
@@ -104,7 +104,7 @@ module Castle
             begin
               MultiJson.load(env[:body], :symbolize_keys => true)
             rescue MultiJson::LoadError
-              raise Castle::ApiError, 'Invalid response from Castle API'
+              raise ChimeCastle::ApiError, 'Invalid response from Castle API'
             end
           end
 
@@ -112,22 +112,22 @@ module Castle
           when 200..299
             # OK
           when 400
-            raise Castle::BadRequestError, response[:message]
+            raise ChimeCastle::BadRequestError, response[:message]
           when 401
-            raise Castle::UnauthorizedError, response[:message]
+            raise ChimeCastle::UnauthorizedError, response[:message]
           when 403
-            raise Castle::ForbiddenError, response[:message]
+            raise ChimeCastle::ForbiddenError, response[:message]
           when 404
-            raise Castle::NotFoundError, response[:message]
+            raise ChimeCastle::NotFoundError, response[:message]
           when 419
             # session token is invalid so clear it
-            RequestStore.store[:castle].session_token = nil
+            RequestStore.store[:chime_castle].session_token = nil
 
-            raise Castle::UserUnauthorizedError, response[:message]
+            raise ChimeCastle::UserUnauthorizedError, response[:message]
           when 422
-            raise Castle::InvalidParametersError, response[:message]
+            raise ChimeCastle::InvalidParametersError, response[:message]
           else
-            raise Castle::ApiError, response[:message]
+            raise ChimeCastle::ApiError, response[:message]
           end
 
           env[:body] = {

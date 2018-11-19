@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   class Label < Model
     def self.destroy_all(*args)
       self.delete('/v1/labels', *args)

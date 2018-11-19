@@ -2,10 +2,10 @@ require_relative 'cookie_store'
 
 module Padrino
   class Application
-    module Castle
+    module ChimeCastle
       module Helpers
         def castle
-          @castle ||= ::Castle::Client.new(request, response)
+          @castle ||= ::ChimeCastle::Client.new(request, response)
         end
       end
 
@@ -14,6 +14,6 @@ module Padrino
       end
     end
 
-    register Castle
+    register ChimeCastle
   end
 end

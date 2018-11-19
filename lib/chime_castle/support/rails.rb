@@ -1,7 +1,7 @@
-module Castle
+module ChimeCastle
   module CastleClient
     def castle
-      @castle ||= env['castle'] || Castle::Client.new(request, response)
+      @castle ||= env['castle'] || ChimeCastle::Client.new(request, response)
     end
   end
 

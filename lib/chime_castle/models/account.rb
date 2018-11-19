@@ -1,4 +1,4 @@
-module Castle
+module ChimeCastle
   class Account < Model
     def self.fetch
       get('/v1/account')
